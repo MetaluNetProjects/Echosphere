@@ -1,0 +1,26 @@
+# MIN SEC FR param value fadetime
+
+# chenilleHaut(1,2,3,4) chenilleBas(5,6) chenilleHautBas(15,26,35,46) : _Vitesse (tour/s) _Min (0-1) _Max(0-1) _Distance(0-1 ; 1=equidistant(120deg))
+# randomHaut, randomBas, randomHautBas : _Vitesse (0-100) _Min (0-1) _Max(0-1) _Power
+
+# début
+PART A
+0 0 0 reset
+
+0 2 0 chenilleHaut_Distance 1
+0 2 0 chenilleHaut_Min 0 2
+0 2 0 chenilleHaut_Max 1 2
+0 2 0 chenilleHaut_Vitesse 0.5 15
+0 2 0 randomBas_Min 0.1 2
+0 2 0 randomBas_Max 0.4 2
+0 2 0 randomBas_Vitesse 3 2
+
+0 17 0 chenilleHaut_Vitesse -1 20
+
+0 37 0 chenilleHaut_Vitesse 0 5
+0 37 0 chenilleHaut_Max 0 5
+0 40 0 randomBas_Max 0 2
+0 40 0 randomBas_Vitesse 0 2
+
+
+loop

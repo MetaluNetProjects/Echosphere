@@ -35,6 +35,8 @@
 #include <dcmotor.h>
 #include <analog.h>
 #include <switch.h>
+#include <dmx.h>
+#include <kt403.h>
 
 //-------------  Timer1 macros :  ---------------------------------------- 
 //prescaler=PS fTMR1=FOSC/(4*PS) nbCycles=0xffff-TMR1init T=nbCycles/fTMR1=(0xffff-TMR1init)*4PS/FOSC
@@ -52,6 +54,8 @@ DCMOTOR_DECLARE(D);
 
 long int TestVar,TestVar2;
 
+byte serialMode; // 0=DMX 1=KT403
+
 void highInterrupts()
 {
 	if(PIR1bits.TMR1IF) {
@@ -59,6 +63,11 @@ void highInterrupts()
 		DCMOTOR_CAPTURE_SERVICE(D);
 		InitTimerUS(10);
 	}
+}
+
+void lowInterrupts()
+{
+	kt403_lowISR();
 }
 
 t_delay mainDelay;
@@ -77,6 +86,16 @@ void wdReset(void)
 #define wdOK() (wdC < (200*2)) // 2 seconds
 #define wdService() do {if(wdOK()) wdC++;} while(0)
 //----------------------------------------------//
+void serialSetup()
+{
+	if(serialMode == 0) {
+		kt403_deInit();
+		DMXInit();		// init DMX master module
+	}
+	else if(serialMode == 1) {
+		kt403_Init();	// init KT403 module
+	}
+}
 
 void setup(void)
 {
@@ -143,17 +162,34 @@ void setup(void)
 	
 	switchInit();
     //switchSelect(0,K7); 
-	//EEreadMain();
+	EEreadMain();
+	serialSetup();
 	delayStart(mainDelay, 5000); 	// init the mainDelay to 5 ms
 }
 
 // ---------- Main loop ------------
+byte mp3loop = 1;
+
+void MP3Service()
+{
+	static byte wasPlaying;
+	byte isPlaying;
+	
+	isPlaying = kt403_IsPlaying();
+	if(wasPlaying != isPlaying) {
+		printf("C playing %d\n", isPlaying);
+		wasPlaying = isPlaying;
+		//if((isPlaying == 0) && (mp3loop == 1)) play();
+	}
+}
 
 void loop() {
 	fraiseService();
 	analogService();
 	fraiseService();
 	switchService();
+	if(serialMode == 0) DMXService();	// DXM management routine
+	else if(serialMode == 1) MP3Service();
 
 	if(delayFinished(mainDelay)) // when mainDelay triggers 
 	{
@@ -218,7 +254,7 @@ void fraiseReceiveChar()
 void fraiseReceive()
 {
 	unsigned char c;//,c2;
-	unsigned int l;
+	unsigned int i;
 	
 	c = fraiseGetChar();
 
@@ -226,15 +262,25 @@ void fraiseReceive()
 		PARAM_CHAR(1,t2); break;
 		PARAM_CHAR(2,PERIOD); break;
 		//case 20 : Servo_Input(); break;
+		PARAM_CHAR(29,serialMode); EEwriteMain(); serialSetup(); break;
+		PARAM_INT(30,i); DMXSet(i, fraiseGetChar()); // if first byte is 30 then get DMX channel (int) and value (char).
+			break; 
+		case 40: 
+			kt403_SpecifyfolderPlay(fraiseGetChar(), fraiseGetChar()); // (folder, index)
+			break;
+		case 41: 
+			kt403_SetVolume(fraiseGetChar());
+			break;
 		case 120 : DCMOTOR_INPUT(C); break;
 		case 121 : DCMOTOR_INPUT(D); break;
-		case 150 : l = fraiseGetInt() ; analogWrite(LAMP1, l); break;
-		case 151 : l = fraiseGetInt() ; analogWrite(LAMP2, l); break;
+		case 150 : i = fraiseGetInt() ; analogWrite(LAMP1, i); break;
+		case 151 : i = fraiseGetInt() ; analogWrite(LAMP2, i); break;
 	}
 }
 
 void EEdeclareMain()
 {
+	EEdeclareChar(&serialMode);
 	//DCMOTOR_DECLARE_EE(C);
 	//DCMOTOR_DECLARE_EE(D);
 }

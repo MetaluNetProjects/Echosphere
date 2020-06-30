@@ -26,5 +26,11 @@
 #define LAMP1 K6
 #define LAMP2 K7
 
+//DMX config:
+#define DMX_UART_NUM 	AUXSERIAL_NUM // 2 for Versa,  1 for 8X2A
+#define DMX_UART_PIN	AUXSERIAL_TX  // K11 for Versa, K5 for 8X2A
+#define DMX_NBCHAN 	256
+
+
 #endif // _CONFIG_H_
 

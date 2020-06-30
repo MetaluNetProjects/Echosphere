@@ -1,0 +1,229 @@
+# MIN SEC FR aiguilles vitesse(-150 150) temps(secondes) : avance vitesse*temps (visible) puis eteint
+# MIN SEC FR horlogeGoto vitesse(-150 150) temps(secondes) : va a minuit (dans le noir...) et avance vitesse*temps 
+# MIN SEC FR ventilo valeur_moyenne(0 - 1)
+
+# attente spectateur
+PART Z
+0 0 0 reset
+0 0 0 minuit
+0 0 0 ventilo 1
+0 0 0 tv stop
+
+pause
+
+PART A
+0 0 0 ventilo 1 10
+0 0 0 abatjour1 1
+0 0 0 abatjour2 1
+0 0 0 fenetre 0.75 10
+
+0 12 0 horloge 1 5
+# aiguilles <- 5h20
+# 0 15 0 aiguilles -78.7 45
+0 15 0 aiguilles -65 11
+# 0 15 0 aiguilles -78.5 45
+# 1 0 0 film pre SEQ1
+1 0 0 tv pre SEQ1
+1 0 0 abatjour1 0 10
+1 1 0 abatjour2 0 10
+1 2 0 fenetre 0 10
+
+1 10 0 film SEQ1
+1 10 0 tv SEQ1
+# 3 20 0 minuit
+
+
+6 23 0 horloge 1 5
+
+6 25 0 tv stop
+6 25 15 film stop
+6 26 0 abatjour2 0.5 10
+# aiguilles <- 1h20
+6 26 0 aiguilles -45 10
+6 26 0 gong 1
+6 35 0 gong 0
+6 35 0 tv pre ARCHIVE
+
+6 36 0 tv ARCHIVE
+6 36 0 son ARCHIVE
+
+# aiguilles <- 1h10
+# 7 0 0 horlogeGoto 20 5
+
+9 10 0 minuit
+
+# 9 15 0 film pre SEQ2
+9 17 0 tv stop
+9 17 0 son stop
+9 17 0  horloge 1 1
+
+# aiguilles -> 12h40
+9 18 0 aiguilles 126 15.3
+9 28 0 tv pre SEQ2
+9 30 0 carillon 1 # 0
+9 33 0 carillon 0 # 3
+# 9 23 0 horloge 0 5 # 5
+
+9 29 0 abatjour2 0 5
+9 32 0 film SEQ2
+9 32 0 tv SEQ2
+10 13 10 phone-sonne 1
+10 20 20 phone-sonne 0
+10 50 0 phone-sonne 1
+11 17 5 phone-sonne 0
+
+
+11 55 0 fenetre 1 10
+11 55 0 horloge 0.5 5 
+11 55 0 tv stop
+11 55 0 film stop
+11 55 0 abatjour1 1 10
+11 55 0 aiguilles 9 1
+12 23 0 telephone 1
+
+# 12 25 0 horlogeGoto 18 3
+
+pause
+
+
+PART B
+
+0 0 0 abatjour1 0 10
+0 0 0 fenetre 0 10
+# 0 0 0 film pre SEQ3
+0 0 0 tv pre SEQ3
+
+0 0 0 horloge 1 1
+# aiguilles <- 2h20
+0 0 0 aiguilles -128 13
+
+0 10 0 film SEQ3
+0 10 0 tv SEQ3
+
+# aiguilles <- 2h20
+# 1 0 0 horlogeGoto 52 4
+# 3 50 0 minuit
+
+4 1 0 horloge 1 5
+4 4 0 fenetre 1 11
+4 4 0 film stop
+4 4 0 tv stop
+# aiguilles -> 10h10
+4 4 0 aiguilles 100 10
+4 13 5 horloge 1
+4 14 0 carillon 1
+
+4 15 0 son ENFANTS
+4 20 0 carillon 0
+4 23 0 horloge 0 5
+
+5 0 0 fenetre 0 5
+5 0 0 horloge 1 5
+4 53 0 minuit
+
+# 5 0 0 film pre SEQ5
+5 0 0 tv pre SEQ5
+5 0 0 film SEQ5
+5 5 0 tv SEQ5
+
+# aiguilles -> 10h10
+# 6 0 0 horlogeGoto -52 4
+
+8 17 0 horloge 1 5
+8 20 0 film stop
+8 20 0 fenetre 0.2 10
+8 20 0 abatjour1 1 10
+8 20 0 abatjour2 1 10
+# aiguilles -> 06h30
+8 20 0 aiguilles 60 10
+8 39 0 horloge 1 1
+8 39 0 carillon 1 1
+8 47 0 carillon 1 0
+8 53 0 horloge 0 5
+
+9 01 0 telephone 2
+# aiguilles -> 11h00
+# 9 05 0 horlogeGoto -30 4.6
+pause
+
+
+PART C
+0 0 0 fenetre 0 5
+0 0 0 abatjour1 0 10
+0 0 0 abatjour2 0 10
+# 0 0 0 film pre SEQ4
+0 0 0 tv pre SEQ4
+
+0 0 0 horloge 1 2
+0 0 0 minuit
+0 8 0 gong 1
+0 11 0 gong 0
+0 10 0 film SEQ4
+0 10 0 tv SEQ4
+
+4 31 0 horloge 1 5
+
+4 34 0 film stop
+# 4 34 0 tv stop
+4 34 0 fenetre 1 10
+4 34 0 abatjour1 1 10
+# 4 34 0 abatjour2 1 10
+4 34 0 tv pre INFO
+# aiguilles -> 14h00
+4 34 0 aiguilles 18.4 10
+4 39 0 gong 1
+
+4 44 0 tv INFO
+4 47 10 horloge 1 1
+4 48 0 gong 0
+4 50 0 horloge 0 5
+
+# aiguilles -> 14h00
+# 6 0 0 horlogeGoto 44 4
+
+8 06 0 horloge 1 5
+8 0 0 minuit
+8 09 0 tv stop
+8 09 0 fenetre 0 11
+8 09 0 abatjour1 1 11
+8 09 0 abatjour2 1 11
+
+# aiguilles 20h55
+8 09 0 aiguilles -28 14.2
+8 09 0 carillon 1
+8 15 0 carillon 0
+8 15 0 gong 1
+8 20 0 gong 0
+
+8 20 0 son TABLE
+
+9 18 0 tv pre CADAVRE
+# 10 25 0 film pre SEQ6
+9 38 0 tv CADAVRE
+9 39 0 gong 1
+9 42 0 gong 0
+10 20 0 aiguilles 8 2
+10 20 0 horloge 1 5
+
+10 30 0 tv stop
+10 30 0 abatjour1 0 5
+10 30 0 abatjour2 0 5
+
+10 45 0 horloge 0 5
+10 41 0 tv pre SEQ6
+10 45 0 film SEQ6
+10 45 0 tv SEQ6
+
+# aiguilles 9h10
+# 12 0 0 horlogeGoto -84 4
+
+16 20 0 tv pre NEIGE
+16 20 0 tv NEIGE
+
+# 10:45 + 5:39 = 16:24
+16 24 0 film stop
+
+17 50 0 tv stop
+
+# 18 10 0 rien
+loop

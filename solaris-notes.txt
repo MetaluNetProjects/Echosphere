@@ -1,0 +1,9 @@
+lampes au dessus : 1 2 3 
+lampes en dessous : 4 5 6
+"moteur" tourne sur 3 lampes : 3 params: vitesse %min %max
+tableaux : 
+- cycle 123123123 pendant que 456 pompent ensemble faiblement- l'inverse- 123456 pompent ensemble (jouer sur vitesses/amplitude)
+- cycle 123-456 en parallèle- flashes aléatoires
+
+moteurs : l'anneau intermédiaire ne peut pas aller lentement.
+son : patch pd martin
